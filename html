@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя идея - Мединское приложение</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1b8a5a;
+            --primary-light: #e8f5e9;
+            --secondary: #1976d2;
+            --bg-main: #f8faf9;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --radius: 16px;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background-color: #1e293b; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 10px; }
+        
+        /* Мобильный фрейм */
+        .phone-frame { width: 390px; height: 820px; background: var(--bg-main); border-radius: 40px; border: 8px solid #334155; overflow: hidden; display: flex; flex-direction: column; position: relative; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
+        
+        /* Шапка */
+        .header { background: white; padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .logo-box { display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; color: white; display: flex; justify-content: center; align-items: center; font-size: 16px; }
+        .header h1 { font-size: 16px; color: var(--text-main); font-weight: 700; }
+        .role-badge { font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; text-transform: uppercase; }
+        .badge-pat { background: var(--primary-light); color: var(--primary); }
+        .badge-doc { background: #e3f2fd; color: var(--secondary); }
+
+        /* Экраны */
+        .screen { display: none; flex: 1; overflow-y: auto; padding: 16px; padding-bottom: 85px; }
+        .screen.active { display: block; }
+
+        /* Карточки */
+        .card { background: white; border-radius: var(--radius); padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .banner-card { background: linear-gradient(135deg, #1b8a5a, #2e7d32); color: white; border-radius: var(--radius); padding: 18px; margin-bottom: 14px; }
+        
+        /* Кнопки и формы */
+        .btn { background: var(--primary); color: white; border: none; width: 100%; padding: 12px; border-radius: 12px; font-weight: 600; cursor: pointer; font-size: 14px; margin-top: 8px; transition: 0.2s; }
+        .btn:active { opacity: 0.9; }
+        .btn-doc { background: var(--secondary); }
+        
+        .input-group { margin-bottom: 12px; }
+        .input-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-sub); margin-bottom: 4px; }
+        .input-group input, .input-group select { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 10px; font-size: 14px; outline: none; }
+        .input-group input:focus { border-color: var(--primary); }
+
+        /* Разделы побочных эффектов */
+        .effect-box { background: #f8faf9; border-left: 4px solid var(--primary); padding: 12px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; color: var(--text-main); }
+        .effect-box ul { margin-left: 18px; margin-top: 6px; color: var(--text-sub); }
+
+        /* Нижняя навигация */
+        .nav-bar { position: absolute; bottom: 0; left: 0; width: 100%; background: white; border-top: 1px solid var(--border); display: flex; justify-content: space-around; padding: 10px 0; z-index: 10; }
+        .nav-item { text-align: center; color: var(--text-sub); font-size: 10px; cursor: pointer; flex: 1; text-decoration: none; }
+        .nav-item i { font-size: 18px; display: block; margin-bottom: 3px; }
+        .nav-item.active { color: var(--primary); font-weight: 700; }
+        .nav-item.doc-active { color: var(--secondary); font-weight: 700; }
+    </style>
+</head>
+<body>
+
+<div class="phone-frame">
+    <!-- Шапка приложения -->
+    <div class="header" id="appHeader" style="display:none;">
+        <div class="logo-box">
+            <div class="logo-icon"><i class="fa-solid fa-pills"></i></div>
+            <h1>Моя идея</h1>
+        </div>
+        <span id="roleBadge" class="role-badge badge-pat">Пациент</span>
+    </div>
+
+    <!-- 0. РЕГИСТРАЦИЯ И ВЫБОР РОЛИ -->
+    <div id="screen-auth" class="screen active" style="padding-top: 30px;">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <div class="logo-icon" style="width: 50px; height: 50px; font-size: 24px; margin: 0 auto 10px; border-radius: 14px;"><i class="fa-solid fa-leaf"></i></div>
+            <h2 style="color: var(--primary); font-size: 20px;">Моя идея</h2>
+            <p style="font-size: 12px; color: var(--text-sub);">Ваш помощник в проверке препаратов</p>
+        </div>
+
+        <div class="card">
+            <div class="input-group">
+                <label>Имя и Фамилия</label>
+                <input type="text" id="regName" placeholder="Анна Смирнова">
+            </div>
+            <div class="input-group">
+                <label>Gmail</label>
+                <input type="email" id="regEmail" placeholder="anna@gmail.com">
+            </div>
+            <div class="input-group">
+                <label>Выберите ваш режим</label>
+                <select id="regRole">
+                    <option value="patient">Пациент (для себя)</option>
+                    <option value="doctor">Врач (для работы с пациентами)</option>
+                </select>
+            </div>
+            <button class="btn" onclick="registerUser()">Зарегистрироваться</button>
+        </div>
+    </div>
+
+    <!-- ===== РЕЖИМ ПАЦИЕНТА ===== -->
+    <!-- 1. Главная (Трекер и Связь с врачом) -->
+    <div id="p-home" class="screen">
+        <div class="banner-card">
+            <h3>Привет, <span class="userName"></span>! 👋</h3>
+            <p style="font-size: 12px; opacity: 0.9; margin-top: 4px;">Как вы себя чувствуете сегодня?</p>
+        </div>
+
+        <div class="card">
+            <h4 style="font-size: 14px; margin-bottom: 8px;">Мои препараты на сегодня</h4>
+            <div style="background: var(--primary-light); padding: 12px; border-radius: 10px;">
+                <label style="font-size: 13px; display: flex; align-items: center; gap: 10px; cursor: pointer; color: var(--primary); font-weight: 600;">
+                    <input type="checkbox" id="dailyCheck" onchange="toggleDailyPill(this)" style="width: 18px; height: 18px; accent-color: var(--primary);">
+                    Пью каждый день, всё хорошо
+                </label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h4 style="font-size: 14px; margin-bottom: 6px;">Мой врач</h4>
+            <p style="font-size: 11px; color: var(--text-sub); margin-bottom: 10px;">Привязанный врач: <b>doc@gmail.com</b></p>
+            <input type="text" id="msgToDoc" placeholder="Написать сообщение врачу..." style="width:100%; padding:10px; border:1px solid var(--border); border-radius:8px; font-size:12px; outline:none;">
+            <button class="btn" style="padding: 10px; font-size: 12px; margin-top: 8px;" onclick="sendMsgToDoctor()">Отправить сообщение</button>
+        </div>
+    </div>
+
+    <!-- 2. Сочетаемость -->
+    <div id="p-checker" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Сочетаемость препаратов</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Объяснение простым языком</p>
+        
+        <div class="card">
+            <div class="input-group"><label>Первый препарат</label><input type="text" id="drug1" placeholder="Парацетамол"></div>
+            <div class="input-group"><label>Второй препарат</label><input type="text" id="drug2" placeholder="Амоксиклав"></div>
+            <button class="btn" onclick="checkPatientCombo()">Проверить сочетание</button>
+        </div>
+        <div id="patientResult"></div>
+    </div>
+
+    <!-- 3. Побочные эффекты -->
+    <div id="p-effects" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Побочные эффекты</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Информация о ваших препаратах</p>
+
+        <div class="effect-box">
+            <b>🔹 Часто встречающиеся:</b>
+            <ul>
+                <li>Тошнота</li>
+                <li>Головная боль</li>
+                <li>Головокружение</li>
+            </ul>
+        </div>
+
+        <div class="effect-box" style="border-color: #eab308;">
+            <b>🔸 Редко встречающиеся:</b>
+            <ul>
+                <li>Аллергические реакции</li>
+                <li>Нарушение сна</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 4. Профиль -->
+    <div id="p-profile" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 12px;">Профиль пациента</h3>
+        <div class="card">
+            <p style="font-size: 14px; margin-bottom: 6px;"><b>Имя:</b> <span class="userName"></span></p>
+            <p style="font-size: 14px;"><b>Gmail:</b> <span id="userGmail"></span></p>
+            <button class="btn" style="background: #ef4444; margin-top: 20px;" onclick="location.reload()">Выйти из аккаунта</button>
+        </div>
+    </div>
+
+    <!-- ===== РЕЖИМ ВРАЧА ===== -->
+    <!-- 1. Пациенты -->
+    <div id="d-patients" class="screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <h3 style="font-size: 16px;">Пациенты</h3>
+            <button class="btn btn-doc" style="width: auto; padding: 6px 12px; font-size: 12px; margin: 0;" onclick="addPatientByEmail()">+ Добавить</button>
+        </div>
+        
+        <div id="docPatientsList">
+            <div class="card">
+                <b style="font-size: 14px;">Анна Смирнова</b>
+                <p style="font-size: 11px; color: var(--text-sub); margin-top: 2px;">anna@gmail.com</p>
+                <p style="font-size: 12px; color: var(--primary); font-weight: 600; margin-top: 6px;"><i class="fa-solid fa-circle-check"></i> Таблетки на сегодня приняты</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Клинический анализ -->
+    <div id="d-checker" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">Проверка сочетаемости</h3>
+        <p style="font-size: 12px; color: var(--text-sub); margin-bottom: 14px;">Профессиональный анализ с терминами</p>
+        
+        <div class="card">
+            <div class="input-group"><label>Препарат A</label><input type="text" placeholder="Парацетамол"></div>
+            <div class="input-group"><label>Препарат B</label><input type="text" placeholder="Амоксиклав"></div>
+            <button class="btn btn-doc" onclick="alert('Проведена проверка: Фармакодинамического взаимодействия не обнаружено. Сочетанный прием допустим.')">Анализ взаимодействия</button>
+        </div>
+    </div>
+
+    <!-- 3. Входящие сообщения -->
+    <div id="d-inbox" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 12px;">Входящие сообщения</h3>
+        <div id="inboxList">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <b style="font-size: 13px;">Анна Смирнова</b>
+                    <small style="font-size: 10px; color: var(--text-sub);">Сегодня</small>
+                </div>
+                <p style="font-size: 12px; color: #334155;">"Здравствуйте! Я сегодня приняла все лекарства по графику."</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Профиль Врача -->
+    <div id="d-profile" class="screen">
+        <h3 style="font-size: 16px; margin-bottom: 12px;">Профиль врача</h3>
+        <div class="card">
+            <p style="font-size: 14px; margin-bottom: 6px;"><b>Врач:</b> <span class="userName"></span></p>
+            <p style="font-size: 14px;"><b>Gmail:</b> <span id="docGmail"></span></p>
+            <button class="btn" style="background: #ef4444; margin-top: 20px;" onclick="location.reload()">Выйти из аккаунта</button>
+        </div>
+    </div>
+
+    <!-- Нижняя панель навигации (4 ярлыка) -->
+    <div class="nav-bar" id="bottomNav" style="display:none;"></div>
+</div>
+
+<script>
+    let user = { name: '', email: '', role: '' };
+
+    function registerUser() {
+        user.name = document.getElementById('regName').value || 'Анна Смирнова';
+        user.email = document.getElementById('regEmail').value || 'anna@gmail.com';
+        user.role = document.getElementById('regRole').value;
+
+        document.getElementById('screen-auth').classList.remove('active');
+        document.getElementById('appHeader').style.display = 'flex';
+        document.getElementById('bottomNav').style.display = 'flex';
+
+        document.querySelectorAll('.userName').forEach(el => el.innerText = user.name);
+        
+        if (user.role === 'patient') {
+            document.getElementById('userGmail').innerText = user.email;
+            document.getElementById('roleBadge').className = 'role-badge badge-pat';
+            document.getElementById('roleBadge').innerText = 'Пациент';
+            setupPatientNav();
+            showScreen('p-home');
+        } else {
+            document.getElementById('docGmail').innerText = user.email;
+            document.getElementById('roleBadge').className = 'role-badge badge-doc';
+            document.getElementById('roleBadge').innerText = 'Врач';
+            setupDoctorNav();
+            showScreen('d-patients');
+        }
+    }
+
+    function setupPatientNav() {
+        document.getElementById('bottomNav').innerHTML = `
+            <div class="nav-item active" onclick="navClick(this, 'p-home')"><i class="fa-solid fa-house"></i>Главная</div>
+            <div class="nav-item" onclick="navClick(this, 'p-checker')"><i class="fa-solid fa-pills"></i>Сочетаемость</div>
+            <div class="nav-item" onclick="navClick(this, 'p-effects')"><i class="fa-solid fa-triangle-exclamation"></i>Побочные</div>
+            <div class="nav-item" onclick="navClick(this, 'p-profile')"><i class="fa-solid fa-user"></i>Профиль</div>
+        `;
+    }
+
+    function setupDoctorNav() {
+        document.getElementById('bottomNav').innerHTML = `
+            <div class="nav-item doc-active" onclick="navClick(this, 'd-patients')"><i class="fa-solid fa-users"></i>Пациенты</div>
+            <div class="nav-item" onclick="navClick(this, 'd-checker')"><i class="fa-solid fa-microscope"></i>Проверка</div>
+            <div class="nav-item" onclick="navClick(this, 'd-inbox')"><i class="fa-solid fa-envelope"></i>Входящие</div>
+            <div class="nav-item" onclick="navClick(this, 'd-profile')"><i class="fa-solid fa-user-doctor"></i>Профиль</div>
+        `;
+    }
+
+    function navClick(el, screenId) {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active', 'doc-active'));
+        el.classList.add(user.role === 'patient' ? 'active' : 'doc-active');
+        showScreen(screenId);
+    }
+
+    function showScreen(id) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+    }
+
+    function checkPatientCombo() {
+        let res = document.getElementById('patientResult');
+        res.innerHTML = `<div class="card" style="border-left: 4px solid #1b8a5a;">
+            <b style="color: #1b8a5a;">Сочетаемость в порядке</b><br>
+            <span style="font-size:12px; color:#64748b;">Серьезных негативных взаимодействий между препаратами не найдено.</span>
+        </div>`;
+    }
+
+    function toggleDailyPill(cb) {
+        if(cb.checked) {
+            alert("Отлично! Статус отправлен вашему врачу.");
+        }
+    }
+
+    function sendMsgToDoctor() {
+        let txt = document.getElementById('msgToDoc').value;
+        if(txt) {
+            alert("Сообщение успешно отправлено врачу!");
+            document.getElementById('msgToDoc').value = '';
+        }
+    }
+
+    function addPatientByEmail() {
+        let mail = prompt("Введите Gmail пациента:");
+        if(mail) {
+            let list = document.getElementById('docPatientsList');
+            list.innerHTML += `<div class="card"><b style="font-size:14px;">Новый пациент</b><p style="font-size:11px; color:gray;">${mail}</p><p style="font-size:12px; color:orange; margin-top:4px;">Ожидание отметки за сегодня</p></div>`;
+        }
+    }
+</script>
+</body>
+</html>
